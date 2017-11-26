@@ -1,0 +1,82 @@
+.league {
+  &__centerTitle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px 0;
+  }
+  &__title {
+    position: relative;
+    display: inline-block;
+    margin: 0 auto;
+  }
+  h2 {
+    text-align: center;
+    padding: 20px 0;
+    color: $black;
+    margin: 0;
+    font-size: 40px;
+  }
+  h1 {
+    position: absolute;
+    right: 0;
+    bottom: -25px;
+    transform: rotate(-5deg);
+    font-family: 'Abril Fatface', cursive;
+    text-align: center;
+    padding: 20px 0;
+    color: $black;
+    text-shadow: $green 3px 0px;
+    letter-spacing: 1.2px;
+    margin: 0;
+  }
+  &__details {
+    // display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+  &__people {
+    background: lighten($grey, 20);
+    padding: 20px 10px;
+    margin: 0 25px;
+    h3 {
+      margin: 0;
+      text-align: center;
+      font-family: $displayFont;
+    }
+  }
+  .holdPeople {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .personBlock {
+    width: 25%;
+    min-height: 75px;
+    border: 1px solid $black;
+    margin: 10px;
+    &__img {
+      max-width: 65%;
+      margin: 0 auto;
+      img {
+        max-width: 100%;
+        display: block;
+      }
+    }
+    p {
+      margin: 0;
+      text-align: center;
+      background: $black;
+      color: $white;
+    }
+  }
+  &__episodes {
+    padding: 20px 10px;
+    margin: 0 25px;
+    background: $white;
+  }
+  &__rules {
+    background: lighten($grey, 20);
+    padding: 20px 10px;
+    margin: 0 25px;
+  }
+}

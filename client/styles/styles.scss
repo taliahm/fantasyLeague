@@ -1,1 +1,67 @@
 @import 'normalize';
+@import 'variables';
+@import 'League';
+
+body {
+  font-family: 'Poppins', sans-serif;
+  // background: $black;
+}
+.main {
+  background: $black;
+  position: relative;
+  top: 0;
+  bottom: 0;
+  height: 100vh;
+  h1 {
+    font-family: 'Abril Fatface', cursive;
+    text-align: center;
+    padding: 40px 0;
+    color: $white;
+    text-shadow: $green 3px 0px;
+    letter-spacing: 1.2px;
+    margin: 0;
+  }
+  &__holdSections {
+    display: flex;
+    width: 100%;
+  }
+  &__half--green, &__half--grey {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 50%;
+    padding: 10px;
+    min-height: 400px;
+  }
+  &__half--grey {
+    background: #848C8E;
+    margin-right: 10px;
+
+  }
+  &__half--green {
+    background: #75B09C;
+    margin-left: 10px;
+  }
+  &__createButton {
+    color: $white;
+    text-decoration: none;
+    background: $black;
+    padding: 5px 10px;
+  }
+  &__holdLink {
+    background: $black;
+    margin: 5px 10px;  
+    min-width: 150px;  
+  }
+  &__leagueLink {
+    color: $white;
+    text-decoration: none;
+    padding: 0px 10px;
+    h4 {
+      margin: 0;
+      padding: 0 10px;
+    }
+  }
+}
