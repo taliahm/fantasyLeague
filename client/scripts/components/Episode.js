@@ -52,22 +52,21 @@ export class Episode extends React.Component {
     // if NOT pristine, then UPDATE
     const initialState = { isPristine: true };
     if (Object.keys(activeEpisode).length === 0) {
-      console.log('first if?', personToSave)
       this.props.actions.createEpisode(personToSave, leagueId, episodeName);
     } else {
       const id = activeEpisode._id;
-      console.log('second if', personToSave);
+      console.log(id, 'this should be the epsiode id');
       this.props.actions.updateEpisode(personToSave, id, leagueId, episodeName);
     }
   }
   render() {
-    const { activeLeague } = this.props;
-    const {rules, people } = activeLeague;
+    const { activeLeague, activeLeaguePeople } = this.props;
+    const {rules } = activeLeague;
     return (
       <div className="episode"> 
         Episode.
         <input name="episodeName" value={this.state.episodeName} onChange={this.handleName}/>
-        {people.map((person, i) => {
+        {activeLeaguePeople.map((person, i) => {
           return (
             <div>
               <PeopleWithRules
@@ -93,6 +92,7 @@ function mapStateToProps(state, ownProps) {
     episodes: state.episodes.data,
     activeLeague: state.data.activeLeague,
     activeEpisode: state.episodes.activeEpisode || null,
+    activeLeaguePeople: state.data.activeLeaguePeople || [],
   }
 }
 

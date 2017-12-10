@@ -4,8 +4,9 @@ import { bindActionCreators } from 'redux';
 
 import { Link } from 'react-router';
 import Results from './Results.js';
+import RenderPerson from './RenderPeopleWithPoints.js';
 
-import createLeagues, { getSingleLeague } from '../operations/league-operations';
+import createLeagues, { getSingleLeague, getPeopleInLeague } from '../operations/league-operations';
 import { getEpisodes } from '../operations/episode-operations';
 
 export class League extends React.Component {
@@ -20,26 +21,22 @@ export class League extends React.Component {
   }
   componentDidMount() {
     this.props.actions.getSingleLeague(this.props.params.id);
+    this.props.actions.getPeopleInLeague(this.props.params.id);
   }
   renderPeople() {
-    if (this.props.activeLeague.length === 0) return;
-    const { people } = this.props.activeLeague[0];
-    if (!people || !people.length) return;
-    return people.map((person) => {
+    const { activeLeaguePeople } = this.props;
+    if (!activeLeaguePeople.length) return;
+    return activeLeaguePeople.map((person) => {
       return (
         <div className="personBlock">
-          <p>{person.personName}</p>
-          <div className="personBlock__img">
-            <img src="../../../assets/person.png" />
-          </div>
-          <p>{person.description || 'no description provided'}</p>
+          <RenderPerson person={person} />
         </div>
       )
     })
   }
   renderRules() {
-    if (this.props.activeLeague === 0) return;
-    const { rules } = this.props.activeLeague[0];
+    if (!this.props.activeLeague) return;
+    const { rules } = this.props.activeLeague;
     if (!rules|| !rules.length) return;
     return rules.map((rule) => {
       return (
@@ -54,32 +51,32 @@ export class League extends React.Component {
     const { episodes } = this.props;
     // if (!episodes.length) return;
     return episodes.map((episode) => {
-      console.log(episode)
       const rules = episode.person;
       return (
         <div>
           <span>{episode.name}</span>
-          <Results data={episode}/>
+          {/* <Results data={episode}/> */}
         </div>
       )
     })
   }
   render() {
-    const { activeLeague, isFetching } = this.props;
+    const { activeLeague, isFetched, activeLeaguePeople } = this.props;
+    console.log(activeLeaguePeople.length);
     // eventually add a way to view created episodes
     return (
       <div className="league"> 
-        {isFetching ? <p>loading... </p> :
+        {!isFetched ? <p>loading... </p> :
         <div>
           <div className="league__centerTitle">
             <div className="league__title">
-              <h2>{activeLeague[0].name}</h2>
+              <h2>{activeLeague.name}</h2>
               <h1>League</h1>
             </div>
           </div>
           <div className="league__details">
           <div className="league__people">
-            <h3>Contestants in {activeLeague[0].name}</h3>
+            <h3>Contestants in {activeLeague.name}</h3>
             <div className="holdPeople">
               {this.renderPeople()}
             </div>
@@ -106,16 +103,18 @@ export class League extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   const id = ownProps.params.id;
-  const leagues = state.data.leagues;
+  const { leagues, activeLeaguePeople } = state.data;
   const activeLeague = leagues.filter(league => {
     return league._id === id;
   });
+  const isFetched = activeLeague && activeLeaguePeople.length > 0 ? true : false;
   return {
-    leagues: state.data.leagues,
+    leagues,
     episodes: state.episodes.data,
     id,
-    activeLeague,
-    isFetching: state.data.isFetching,
+    activeLeague: activeLeague[0] || state.activeLeague,
+    activeLeaguePeople,
+    isFetched,
   }
 }
 
@@ -124,7 +123,8 @@ function mapDispatchToProps(dispatch) {
     actions: bindActionCreators({ 
       createLeagues,
       getSingleLeague,
-      getEpisodes
+      getEpisodes,
+      getPeopleInLeague
      }, dispatch),
   }
 }

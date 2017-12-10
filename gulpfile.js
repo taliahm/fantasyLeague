@@ -24,7 +24,7 @@ gulp.task('js', () => {
     })
         .transform('babelify', {
             sourceMaps: true,
-            presets: ['es2015','react'],
+            presets: ['es2015', 'es2016', 'react'],
         })
         .bundle()
         .on('error',notify.onError({

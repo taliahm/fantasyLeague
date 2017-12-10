@@ -1,18 +1,21 @@
 const mongoose = require('mongoose');
+require('./people-model.js');
 
-
-const RuleSchema = new mongoose.Schema({
-  personName: String,
-  description: String,
-  rules: Object,
-  _id: String,
-});
+// const PeopleSchema = new mongoose.Schema({
+//   personName: String,
+//   description: String,
+//   rules: Object,
+//   totalPoints: Number,
+//   _id: String,
+// });
 
 const EpisodeSchema = new mongoose.Schema({
   name: String,
   league: String,
-  people: [RuleSchema],
+  people: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Person',
+  }],
 });
 
 module.exports = mongoose.model('Episode', EpisodeSchema);
-// module.exports = mongoose.model('Rule', RuleSchema);

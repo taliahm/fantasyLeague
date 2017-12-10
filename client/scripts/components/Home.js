@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { Link } from 'react-router';
-
+import Login from './Login.js';
+import { checkUserStatus } from '../operations/user-operations';
 import createLeagues, { getLeagues, getSingleLeague } from '../operations/league-operations';
 
 export class Home extends React.Component {
@@ -12,15 +13,16 @@ export class Home extends React.Component {
     this.handleClick = this.handleClick.bind(this);
   }
   componentWillMount() {
-    this.props.actions.getLeagues();
+    this.props.actions.checkUserStatus();
   }
   handleClick(id) {
     actions.getSingleLeague(id);
-    // this.props.router.push(`league/${id}`)
   }
   render() {
     return (
-      <div className="main"> 
+      <div className="main">
+        {this.props.user ?
+        <div> 
         <h1>In a League of Your Own</h1>
         <div className="main__holdSections">
           <div className="main__half--green">
@@ -43,6 +45,8 @@ export class Home extends React.Component {
             })}
           </div>
         </div>
+        </div>
+        : <Login /> }
       </div>
     )
   }
@@ -51,6 +55,7 @@ export class Home extends React.Component {
 function mapStateToProps(state) {
   return {
     leagues: state.data.leagues,
+    user: state.user.currentUser,
   }
 }
 
@@ -59,7 +64,8 @@ function mapDispatchToProps(dispatch) {
     actions: bindActionCreators({ 
       createLeagues,
       getLeagues,
-      getSingleLeague
+      getSingleLeague,
+      checkUserStatus,
     }, dispatch),
   }
 }

@@ -467,6 +467,23 @@ template {
   padding: 20px 10px;
   margin: 0 25px; }
 
+.personBlock {
+  width: 25%;
+  min-height: 75px;
+  border: 1px solid #2A2D34;
+  margin: 10px; }
+  .personBlock__img {
+    max-width: 65%;
+    margin: 0 auto; }
+    .personBlock__img img {
+      max-width: 100%;
+      display: block; }
+  .personBlock p {
+    margin: 0;
+    text-align: center;
+    background: #2A2D34;
+    color: #FBF9FC; }
+
 body {
   font-family: 'Poppins', sans-serif; }
 

@@ -3,6 +3,7 @@ import * as types from '../types/types';
 const initialState = {
   leagues: [],
   activeLeague: {},
+  activeLeaguePeople: [],
   leagueCreated: false,
   isFetching: false,
 };
@@ -14,6 +15,8 @@ export default function leagueReducer(state = initialState, action) {
           leagues: action.payload,
           leagueCreated: false,
           isFetching: false,
+          activeLeague: state.activeLeague,
+          activeLeaguePeople: state.activeLeaguePeople,
         };
       }
       case types.LEAGUE_FETCHING: {
@@ -21,7 +24,8 @@ export default function leagueReducer(state = initialState, action) {
           isFetching: action.payload,
           leagues: state.leagues,
           leagueCreated: false,
-          activeLeague: {},
+          activeLeague: state.activeLeague,
+          activeLeaguePeople: state.activeLeaguePeople,
         }
       }
       case types.LEAGUE_RECIEVED: {
@@ -30,14 +34,26 @@ export default function leagueReducer(state = initialState, action) {
           leagueCreated: false,
           leagues: state.leagues,
           isFetching: false,
+          activeLeaguePeople: state.activeLeaguePeople,
         }
       }
       case types.LEAGUE_CREATED: {
-        return {
+        const newState = Object.assign({}, state, { activeLeague: action.payload }, { leagueCreated: true});
+        return newState;
           // ...state,
-          activeLeague: action.payload,
-          leagueCreated: true,
-          leagues: state.leagues,
+          // activeLeague: action.payload,
+          // leagueCreated: true,
+          // leagues: state.leagues,
+          // activeLeaguePeople: state.activeLeaguePeople,
+      }
+      case types.PEOPLE_RECIEVED: {
+        return {
+          ...state,
+          leaguesCreated: true,
+          isFetching: false,
+          // leagues: state.leagues,
+          // activeLeague: state.activeLeague,
+          activeLeaguePeople: action.payload,
         }
       }
       default: {

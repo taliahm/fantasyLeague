@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { updateLeague } from '../operations/league-operations.js';
+import { updateLeague, addPerson } from '../operations/league-operations.js';
 
 class Participant extends React.Component {
   constructor(props) {
@@ -22,10 +22,10 @@ class Participant extends React.Component {
   }
   handleSave() {
     const { activeLeague, actions } = this.props;
-    const person = Object.assign({}, this.state);
+    const person = Object.assign({}, this.state, { leagueId: activeLeague._id });
     delete person.saved;
     // this is where we will handle save with the api
-    actions.updateLeague(person, activeLeague._id, 'people');
+    actions.addPerson(person, activeLeague._id);
     this.setState({
       saved: true,
     });
@@ -71,6 +71,7 @@ function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators({ 
       updateLeague,
+      addPerson
     }, dispatch),
   }
 }

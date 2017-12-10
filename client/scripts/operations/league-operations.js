@@ -1,4 +1,4 @@
-import { leaguesRecieved, fetching, leagueRecieved, leagueCreated  } from '../actions/league-actions';
+import { leaguesRecieved, fetching, leagueRecieved, leagueCreated, peopleRecieved  } from '../actions/league-actions';
 import { push } from 'react-router-redux';
 
 export default function createLeagues() {
@@ -37,16 +37,30 @@ export function getSingleLeague(id) {
     .then((json) => {
       const data = json;
       dispatch(leagueRecieved(data))
-      dispatch(push(`league/${id}`))
+      // dispatch(push(`league/${id}`))
     })
     .catch(err => console.log(err, 'this is an error'));
+  }
+}
+
+// get people in one of the leagues
+export function getPeopleInLeague(id) {
+  console.log('trying to get the ppep', id);
+  return (dispatch) => {
+    dispatch(fetching(true))
+    return fetch(`/api/person/${id}`, { method: 'GET' })
+    .then(res => res.json())
+    .then(json => {
+      dispatch(peopleRecieved(json))
+    })
+    .catch((err) => console.log(err))
   }
 }
 
 //save a league
 export function saveLeague(league) {
   return (dispatch) => {
-    return fetch('api/league', { 
+    return fetch('/api/league', { 
       method: 'POST',
       body: JSON.stringify(league),
       headers: { 'Content-Type': 'application/json' },
@@ -58,7 +72,7 @@ export function saveLeague(league) {
   }
 }
 
-//add person to league
+//add rule to league
 export function updateLeague(person, id, key) {
   return (dispatch) => {
     return fetch(`api/league/${id}/${key}`, {
@@ -68,6 +82,22 @@ export function updateLeague(person, id, key) {
     })
     .then(res => res.json())
     .then(json => {
+    })
+    .catch(err => console.log(err))
+  }
+}
+
+// add a person to a league
+export function addPerson(person) {
+  return (dispatch) => {
+    return fetch(`api/person/`, {
+      method: 'POST',
+      body: JSON.stringify(person),
+      headers: { 'Content-Type': 'application/json' },
+    })
+    .then(res => res.json())
+    .then(json => {
+      console.log(json);
     })
     .catch(err => console.log(err))
   }

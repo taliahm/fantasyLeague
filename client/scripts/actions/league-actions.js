@@ -29,3 +29,10 @@ export function fetching(bool) {
     payload: bool,
   }
 }
+
+export function peopleRecieved(data) {
+  return {
+    type: types.PEOPLE_RECIEVED,
+    payload: data,
+  }
+}

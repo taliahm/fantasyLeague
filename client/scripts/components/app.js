@@ -29,7 +29,6 @@ class App extends React.Component {
           <Route exact path="/" component={Home} />
           <Route path="/people" component={CreateParticipants} />
           <Route path="/create" component={CreateLeague} />
-          <Route path="/draft/league" component={Draft} />
           <Route path="/league/:id" component={League} />
         </div>
       </Router>

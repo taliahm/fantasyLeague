@@ -2,10 +2,14 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const passport = require('passport');
+const session = require('express-session');
 
+const User = require('./models/user-model.js');
 const League = require('./models/league-model.js');
 const Episode = require('./models/episode-model.js');
-const Rule = require('./models/rule-model.js');
+const Person = require('./models/people-model.js');
+const Draft = require('./models/draft-model');
 
 mongoose.connect('mongodb://localhost/project', {
   useMongoClient: true,
@@ -13,7 +17,14 @@ mongoose.connect('mongodb://localhost/project', {
 mongoose.Promise = global.Promise;
 
 const app = express();
+passport.use(User.createStrategy());
 app.use(bodyParser.json());
+app.use(session({ secret: 'asdfg', resave: false, saveUninitialized: true }));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 // This serves all files placed in the /public
 // directory (where gulp will build all React code)
@@ -23,11 +34,51 @@ app.use(express.static('public'));
 // assets that you want to manually include)
 app.use(express.static('assets'));
 
+app.get('/api/me', (req, res) => {
+  if (req.user) {
+    res.status(200).send(req.user)
+  } else {
+    res.status(401).json({ message: "Unauthorized."});
+  }
+});
+
+// passport authenticate checks out the body for us to see what's in there.
+app.post('/api/login', passport.authenticate('local'), (req, res) => {
+  // passport adds a 'user' property to the request
+  res.send(req.user);
+});
+
+app.get('/api/logout', (req, res) => {
+  req.logout();
+  res.json('User logged out');
+})
+
+app.post('/api/signup', (req, res) => {
+  const { name, email } = req.body;
+  const newUser = new User({
+    name,
+    email,
+  });
+  // passport local mongoose contains register method.
+  User.register(newUser, req.body.password, (err, user) => {
+    if (err) {
+      res.status(500).send(err);
+    } else {
+      // logIn is provided by express
+      req.logIn(user, (err) => {
+        console.log(user, 'success in th elogin?');
+        res.status(200).send(user);
+      })
+    }
+  });
+})
+
 // Include your own logic here (so it has precedence over the wildcard
 // route below)
 // Get all Leagues
 app.get('/api/leagues', (req, res, next) => {
-  League.find().then((docs) => {
+  League.find()
+  .then((docs) => {
     res.status(200).send(docs);
   })
   .catch((err) => res.status(500).send(err));
@@ -44,7 +95,31 @@ app.post('/api/league', (req, res, next) => {
       res.status(500).send(err);
     })
 });
-// this is for adding people and rules to a league
+
+app.post('/api/person', (req, res, next) => {
+  const personModel = new Person();
+  const personToSave = Object.assign(personModel, req.body);
+  personToSave.save()
+    .then((doc) => {
+      res.send(doc).status(200);
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    })
+})
+// getting people in the league
+app.get('/api/person/:leagueId', (req, res, next) => {
+  Person.find({ leagueId: req.params.leagueId })
+    .then((docs) => {
+      console.log(docs)
+      res.send(docs).status(200);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+})
+
+// this is for adding rules to a league
 app.put('/api/league/:id/:key', (req, res, next) => {
   const toUpdate = req.body;
   const key = req.params.key;
@@ -64,7 +139,7 @@ app.put('/api/league/:id/:key', (req, res, next) => {
 // find episodes by league id
 app.get('/api/episode/:id', (req, res, next) => {
   const leagueId = req.params.id;
-  Episode.find({ league: leagueId })
+  Episode.find({ league: leagueId }).populate('people').exec()
     .then((docs) => {
       res.status(200).send(docs);
     })
@@ -79,7 +154,21 @@ app.post('/api/episode', (req, res, next) => {
   const episode = Object.assign(episodeModel, { people: req.body.people }, {league: req.body.league}, {name: req.body.name});
   episode.save()
     .then((doc) => {
-      res.status(200).send(doc);
+      const currentEpisode = doc;
+      const personId = req.body.people._id;
+      const personToUpdate = Person.findById(personId)
+        .then((foundPerson) => {
+          const personModel = new Person();
+          const episodes = { name: currentEpisode.name, rules: req.body.people.rules }
+          const personToSave = Object.assign(personModel, foundPerson, { episodes })
+          personToSave.save()
+          .then((savedPerson) => {
+            // send back the current episode to be saved
+            res.send(currentEpisode).status(200)
+          })
+          .catch(err => console.log(err))
+        })
+        .catch(err => console.log(err))
     })
     .catch((err) => {
       res.status(500).send(err);
@@ -88,21 +177,28 @@ app.post('/api/episode', (req, res, next) => {
 
 app.put('/api/episode/:id', (req, res, next) => {
   const ruleToSave = req.body.people;
-  console.log(ruleToSave);
-  // console.log(episodeToSave, 'this is what we are trying to save');
+  console.log(req.params.id);
   const episodeToFind = Episode.findById(req.params.id)
     .then((doc) => {
-      console.log(doc, 'this should be the episode');
+      console.log('first save', doc);
       const currentEpisode = doc;
       currentEpisode.people.push(ruleToSave);
-      console.log(currentEpisode, 'this is what we are saving');
-      // const episode = Object.assign(episodeModel, { people: [...req.body.people, ...currentEpisode[0].people] }, {league: req.body.league}, {name: req.body.name}, currentEpisode);
-      // console.log(currenEpisode, 'you should now have an additional person in you');
-      // console.log(episode, 'this is the object assign one');
       currentEpisode.save()
-        .then((doc) => {
-          console.log('do we get into the save?');
-          res.status(200).send(doc);
+        .then((savedEpisode) => {
+          console.log(savedEpisode, 'saved episode');
+          const episodeToUse = savedEpisode;
+          const personId = req.body.people._id;
+          const personToUpdate = Person.findById(personId)
+            .then((foundPerson) => {
+              const personModel = new Person();
+              const episodes = { name: episodeToUse.name, rules: req.body.people.rules }
+              const personToSave = Object.assign(personModel, foundPerson, { episodes })
+              personToSave.save()
+              .then((savedPerson) => {
+                res.send(savedPerson).status(200)
+              })
+              .catch(err => console.log(err))
+            })
         })
         .catch((err) => console.log(err))
     })
@@ -122,6 +218,21 @@ app.get('/api/league/:id', (req, res, next) => {
       res.status(500).send(err);
     })
 });
+
+//Post to drafts
+app.post('/api/draft', (req, res, next) => {
+  console.log(req.user);
+  const draftModel = new Draft;
+  const draftToSave = Object.assign(draftModel, req.body, { userId: req.user._id });
+  draftToSave.save()
+    .then(savedDraft => {
+      res.send(savedDraft).status(200);
+    })
+    .catch((err) => {
+      res.send(err).status(400);
+      console.log(err);
+    })
+})
 
 // This route serves your index.html file (which
 // initializes React)

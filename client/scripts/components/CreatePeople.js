@@ -7,7 +7,6 @@ import Rule from './Rule.js';
 
 import { addPerson } from '../operations/league-operations.js';
 
-// TO DO: ADD image handling
 class CreatePeople extends React.Component {
   constructor(props) {
     super(props);
