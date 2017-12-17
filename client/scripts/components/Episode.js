@@ -60,7 +60,6 @@ export class Episode extends React.Component {
     }
     const savedState = this.state.saved;
     const newSaved = [...savedState, this.state.person._id];
-    console.log(newSaved);
     this.setState({
       saved: newSaved,
     })

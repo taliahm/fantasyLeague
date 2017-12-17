@@ -3,7 +3,6 @@ import { Route, Redirect } from 'react-router';
 import { connect } from 'react-redux';
 
 const AuthRequired = ({component: Component, isAuthenticated, ...rest }) => {
-  console.log(isAuthenticated, 'hello??');
   <Route
     {...rest}
     render={props => {
@@ -22,7 +21,6 @@ const AuthRequired = ({component: Component, isAuthenticated, ...rest }) => {
 }
 
 const mapStateToProps = (state) => {
-  console.log('hellooosss');
   return {
     isAuthenticated: state.user.currentUser,
   }
