@@ -19,6 +19,7 @@ import Episode from './components/Episode.js';
 import CreateLeague from './components/CreateLeague.js';
 import CreatePeople from './components/CreatePeople.js';
 import Draft from './components/Draft.js';
+import AuthRequired from './components/requireAuth.js';
 
 import { getLeagues } from './operations/league-operations';
 
@@ -51,11 +52,12 @@ render(
   <Router history={history}>
       <div>
         <Route exact path="/" component={Home} />
-        <Route exact path="/create" component={CreateLeague} />
-        <Route exact path="/create/people" component={CreatePeople} />
-        <Route path="/league/:id" component={League} />
-        <Route path="/episode/create" component={Episode} />
-        <Route path="/draft/league" component={Draft} />
+        <AuthRequired path="/create" component={CreateLeague} />
+        {/* <Route exact path="/create" component={CreateLeague} /> */}
+        <AuthRequired exact path="/create/people" component={CreatePeople} />
+        <AuthRequired path="/league/:id" component={League} />
+        <AuthRequired path="/episode/create" component={Episode} />
+        <AuthRequired path="/draft/league" component={Draft} />
       </div>
     </Router>
 </Provider>, document.getElementById('app'));

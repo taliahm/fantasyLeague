@@ -1,0 +1,71 @@
+.episode {
+  text-align: center;
+  margin: 0 25px;
+  padding: 15px;
+  h2 {
+    text-align: center;
+    font-family: $displayFont
+  }
+  &__addBlock {
+    margin: 40px 0;
+    border: 1px solid $grey;
+    border-radius: 5px;
+    padding: 10px;
+  }
+  &__saveButton {
+    margin-top: 10px;
+    border: none;
+    background: $grey;
+    padding: 10px;
+    border-radius: 0;
+    color: $white;
+    cursor: pointer;
+    transition: all 0.3s ease-out;
+    font-family: $font;
+    &:hover {
+      background: $green;
+    }
+  }
+  input {
+    border: none;
+    background: darken($white, 20);
+    padding: 20px 20px 5px 20px;
+    margin-bottom: 10px;
+  }
+  span.peopleName {
+    color: $green;
+    font-size: 20px;
+  }
+  &__backButton {
+    display: inline-block;
+    background: $grey;
+    font-size: 10px;
+    text-decoration: none;
+    color: $white;
+    padding: 10px;
+    margin-bottom: 50px;
+    &:hover {
+      background: darken($grey, 20);
+    }
+  }
+}
+
+.peopleWithRules {
+  &__ruleBlock {
+    padding: 5px 0;
+    margin-bottom: 10px;
+  }
+  &__ruleTitle {
+    margin-bottom: 2px;
+    font-size: 20px;
+  }
+  &__formBlock {
+    position: relative;
+    label {
+      position: absolute;
+      font-size: 10px;
+      color: darken($grey, 20);
+      font-style: italic;
+    }
+  }
+}

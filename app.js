@@ -11,15 +11,16 @@ const Episode = require('./models/episode-model.js');
 const Person = require('./models/people-model.js');
 const Draft = require('./models/draft-model');
 
-mongoose.connect('mongodb://localhost/project', {
-  useMongoClient: true,
-});
+// mongoose.connect('mongodb://localhost/project', {
+//   useMongoClient: true,
+// });
+mongoose.connect(process.env.MONGODB_SERVER);
 mongoose.Promise = global.Promise;
 
 const app = express();
 passport.use(User.createStrategy());
 app.use(bodyParser.json());
-app.use(session({ secret: 'asdfg', resave: false, saveUninitialized: true }));
+app.use(session({ secret: process.env.COOKIE_SECRET, resave: false, saveUninitialized: true }));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
@@ -66,18 +67,15 @@ app.post('/api/signup', (req, res) => {
     } else {
       // logIn is provided by express
       req.logIn(user, (err) => {
-        console.log(user, 'success in th elogin?');
         res.status(200).send(user);
       })
     }
   });
 })
 
-// Include your own logic here (so it has precedence over the wildcard
-// route below)
 // Get all Leagues
 app.get('/api/leagues', (req, res, next) => {
-  League.find()
+  League.find().populate('users').exec()
   .then((docs) => {
     res.status(200).send(docs);
   })
@@ -111,14 +109,40 @@ app.post('/api/person', (req, res, next) => {
 app.get('/api/person/:leagueId', (req, res, next) => {
   Person.find({ leagueId: req.params.leagueId })
     .then((docs) => {
-      console.log(docs)
       res.send(docs).status(200);
     })
     .catch((err) => {
-      console.log(err);
     })
 })
 
+
+app.put('/api/draft/:id', (req, res, next) => {
+  console.log('putting');
+  const league = League.findById(req.params.id)
+    .then((doc) => {
+      console.log(doc);
+      const updatedLeague = doc;
+      updatedLeague.users.push(req.user);
+      updatedLeague.save()
+        .then((doc) => {
+          console.log(req.user);
+          const user = User.findById(req.user._id)
+            .then((user) => {
+              console.log(user);
+              const updatedUser = user;
+              updatedUser.leagues.push(req.params.id);
+              updatedUser.save()
+                .then((savedUser) => {
+                  console.log(savedUser);
+                  res.status(200).send(savedUser);
+                })
+            })
+        })
+        .catch(err => {
+          console.log(err);
+        })
+    })
+})
 // this is for adding rules to a league
 app.put('/api/league/:id/:key', (req, res, next) => {
   const toUpdate = req.body;
@@ -177,15 +201,12 @@ app.post('/api/episode', (req, res, next) => {
 
 app.put('/api/episode/:id', (req, res, next) => {
   const ruleToSave = req.body.people;
-  console.log(req.params.id);
   const episodeToFind = Episode.findById(req.params.id)
     .then((doc) => {
-      console.log('first save', doc);
       const currentEpisode = doc;
       currentEpisode.people.push(ruleToSave);
       currentEpisode.save()
         .then((savedEpisode) => {
-          console.log(savedEpisode, 'saved episode');
           const episodeToUse = savedEpisode;
           const personId = req.body.people._id;
           const personToUpdate = Person.findById(personId)
@@ -210,7 +231,7 @@ app.put('/api/episode/:id', (req, res, next) => {
 // Get a specific league by ID, you don't use this currently
 app.get('/api/league/:id', (req, res, next) => {
   const id = req.params.id;
-  const league = League.findById(req.params.id)
+  const league = League.findById(req.params.id).populate('users').exec()
     .then((doc) => {
       res.status(200).send(doc);
     })
@@ -221,16 +242,25 @@ app.get('/api/league/:id', (req, res, next) => {
 
 //Post to drafts
 app.post('/api/draft', (req, res, next) => {
-  console.log(req.user);
+  console.log(req.body);
   const draftModel = new Draft;
+  const userModel = new User;
   const draftToSave = Object.assign(draftModel, req.body, { userId: req.user._id });
   draftToSave.save()
     .then(savedDraft => {
-      res.send(savedDraft).status(200);
+      User.findById(req.user._id)
+        .then((user) => {
+          console.log(user);
+          const newUser = Object.assign(userModel, user, { teams: { people: req.body.people, leagueId: req.body.leagueId }});
+          newUser.save()
+          .then((doc) => {
+            console.log(doc);
+            res.send(doc).status(200);
+          })
+        })
     })
     .catch((err) => {
       res.send(err).status(400);
-      console.log(err);
     })
 })
 
@@ -241,7 +271,7 @@ app.get('*', function(req, res, next) {
 });
 
 // Start your server, and listen on port 8080.
-app.listen(8080, function() {
+app.listen(process.env.PORT, function() {
   console.log("App is now listening on port 8080!");
 })
  

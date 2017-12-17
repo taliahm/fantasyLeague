@@ -1,20 +1,56 @@
-.personBlock {
-  width: 25%;
-  min-height: 75px;
-  border: 1px solid $black;
-  margin: 10px;
-  &__img {
-    max-width: 65%;
-    margin: 0 auto;
-    img {
-      max-width: 100%;
-      display: block;
+.draftBlock {
+  text-align: center;
+  h2 {
+    text-align: center;
+    font-family: $displayFont;
+  }
+  &__peopleSection {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 25px;
+  }
+  &__holdPeople {
+    width: 33%;
+    text-align: center;
+    padding: 25px;
+  }
+  .personBlock {
+    // width: 25%;
+    min-height: 75px;
+    border: 1px solid $black;
+    margin: 10px;
+    &__img {
+      max-width: 65%;
+      margin: 0 auto;
+      img {
+        max-width: 100%;
+        display: block;
+      }
+    }
+    p {
+      margin: 0;
+      text-align: center;
+      background: $black;
+      color: $white;
     }
   }
-  p {
-    margin: 0;
-    text-align: center;
-    background: $black;
+  &__saveButton {
+    display: inline-block;
+    background: $grey;
+    text-decoration: none;
     color: $white;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 0;
+    border: none;
+    &:hover {
+      background: darken($grey, 20);
+    }
+  }
+}
+
+.draftCheckbox {
+  &__block {
+    margin: 10px 0;
   }
 }

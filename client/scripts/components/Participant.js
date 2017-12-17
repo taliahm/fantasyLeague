@@ -33,30 +33,18 @@ class Participant extends React.Component {
   render() {
     const { saved } = this.state;
     return (
-      <div>
-       <h4>A Person!</h4>
-       <div>
-         {saved ? <div> Person saved! </div>
-         :
-          <ul>
-            <li>
-              <label htmlFor="name">Name Person!</label>
-              <input type="text" id="name" name="personName" onChange={this.handleChange} />
-            </li>
-            <li>
-              <label htmlFor="description">Description!</label>
-              <textarea name="description" id="description" cols="30" rows="10" onChange={this.handleChange}></textarea>
-            </li>
-            <li>
-              <button onClick={this.handleSave}>Save</button>
-            </li>
-          </ul>
-         }
-      </div>
-      <div>
-
-      </div>
-      </div>
+      <div className="createRule">
+        {saved ? null
+        :
+        <div className="createRule__form">
+          <label htmlFor="name">Name Person!</label>
+          <input type="text" id="name" name="personName" onChange={this.handleChange} />
+          <label htmlFor="description">Description!</label>
+          <textarea name="description" id="description" cols="30" rows="10" onChange={this.handleChange}></textarea>
+          <button onClick={this.handleSave}>Save</button>
+        </div>
+        }
+    </div>
     )
   }
 }

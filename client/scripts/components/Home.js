@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 
 import { Link } from 'react-router';
 import Login from './Login.js';
-import { checkUserStatus } from '../operations/user-operations';
+import { checkUserStatus, userLogout } from '../operations/user-operations';
 import createLeagues, { getLeagues, getSingleLeague } from '../operations/league-operations';
 
 export class Home extends React.Component {
@@ -24,6 +24,7 @@ export class Home extends React.Component {
         {this.props.user ?
         <div> 
         <h1>In a League of Your Own</h1>
+        <p className="main__description">Create a fantasy league for absolutely anything!</p>
         <div className="main__holdSections">
           <div className="main__half--green">
             <h4> Create your own Fantasy League! </h4>
@@ -45,8 +46,18 @@ export class Home extends React.Component {
             })}
           </div>
         </div>
+        <button
+          className="main__logoutButton"
+          onClick={() => this.props.actions.userLogout()}
+        >Logout</button>
         </div>
-        : <Login /> }
+        : 
+        <div className="main__holdLogin">
+          <h1>In a League of Your Own</h1>
+          <p className="main__description">Create a fantasy league for absolutely anything!</p>
+          <Login />
+        </div> 
+        }
       </div>
     )
   }
@@ -66,6 +77,7 @@ function mapDispatchToProps(dispatch) {
       getLeagues,
       getSingleLeague,
       checkUserStatus,
+      userLogout,
     }, dispatch),
   }
 }

@@ -31,28 +31,46 @@ class CreateLeague extends React.Component {
   render() {
     const { leagueCreated, activeLeague } = this.props;
     return (
-      <div>
-       <h4>Create a League 😱🤞🏻</h4>
-       {leagueCreated ?
-        <div>
-          You are adding to:
-          {activeLeague.name}
+      <div className="create">
+        <div className="create__hold">
+        <h4 className="create__title">Create a League</h4>
+        {leagueCreated ?
+          <div className="create__description">
+            <p>You are adding to: {activeLeague.name}</p>
+          </div>
+        :
+        <div className="create__form">
+          <label
+            htmlFor="leagueName"
+            className="create__label"
+          >
+            Name your league!
+          </label>
+          <input
+            className="create__input"
+            type="text"
+            id="leagueName"
+            name="name"
+            onChange={this.handleChange}
+          />
+          <div className="create__formControls">
+            <button
+              onClick={this.handleSave}
+              className="create__saveButton"
+            >
+              Save
+            </button>
+            <Link
+              to="/"
+              className="create__cancel"
+            >
+              Cancel
+            </Link>
+          </div>
         </div>
-       :
-       <div>
-         <ul>
-           <li>
-            <label htmlFor="leagueName">League Name!</label>
-            <input type="text" id="leagueName" name="name" onChange={this.handleChange} />
-          </li>
-          <li>
-            <button onClick={this.handleSave}>Save</button>
-          </li>
-         </ul>
-      </div>
-       }
-      {leagueCreated ? <CreatePeople /> : null }
-      <Link to="/">Done Creating League!</Link>
+        }
+        {leagueCreated ? <CreatePeople /> : null }
+        </div>
       </div>
     )
   }

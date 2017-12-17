@@ -36,3 +36,17 @@ export function peopleRecieved(data) {
     payload: data,
   }
 }
+
+export function personAddedToLeague(data) {
+  return {
+    type: types.LEAGUE_EDITTED,
+    payload: data,
+  }
+}
+
+export function ruleAddedToLeague(data) {
+  return {
+    type: types.RULE_ADDED,
+    payload: data,
+  }
+}

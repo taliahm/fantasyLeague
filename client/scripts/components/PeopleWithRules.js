@@ -14,21 +14,23 @@ export class PeopleWithRules extends React.Component {
     const { rules, person, league, id, value, handleChange } = this.props;
     return (
       <div className="peopleWithRules"> 
-        {person.personName}
+        <h4>How many times did <span className="peopleName">{person.personName}</span> do these things?</h4>
         {rules.map((rule, i) => {
           const ruleId = rule._id; 
           const personId = person._id;
           return (
-            <div>
-              <span>{rule.ruleName}</span>
-              <span>Number of Points: {rule.points}</span>
-              <label htmlFor={i}>How many times did this happen?</label>
-              <input
-                id={i}
-                name={ruleId}
-                value={value}
-                onChange={(e) => handleChange(e, person)}
-              />
+            <div className="peopleWithRules__ruleBlock">
+              <p className="peopleWithRules__ruleTitle">{rule.ruleName}:</p>
+              <div className="peopleWithRules__formBlock">
+                <label htmlFor={i}>Number of instances</label>
+                <input
+                  type="number"
+                  id={i}
+                  name={ruleId}
+                  value={value}
+                  onChange={(e) => handleChange(e, person)}
+                /> <span> x {rule.points} points</span>
+              </div>
             </div>
           )
         })}

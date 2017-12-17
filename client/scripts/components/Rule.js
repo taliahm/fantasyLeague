@@ -33,24 +33,17 @@ class Rule extends React.Component {
   render() {
     const { saved } = this.state;
     return (
-      <div>
-       <h4>A Person!</h4>
+      <div className="createRule">
        <div>
-         {saved ? <div> Rule saved! </div>
+         {saved ? null
          :
-          <ul>
-            <li>
-              <label htmlFor="ruleName">Describe Your Rule!</label>
-              <input value={this.state.name} type="text" id="ruleName" name="ruleName" onChange={this.handleChange} />
-            </li>
-            <li>
-              <label htmlFor="rulePoint">Number of Points!</label>
-              <input value={this.state.points} type="number" id="rulePoint" name="points" onChange={this.handleChange} />
-            </li>
-            <li>
-              <button onClick={this.handleSave}>Save</button>
-            </li>
-          </ul>
+          <div className="createRule__form">
+            <label htmlFor="ruleName">Describe Your Rule!</label>
+            <input value={this.state.name} type="text" id="ruleName" name="ruleName" onChange={this.handleChange} />
+            <label htmlFor="rulePoint">Number of Points!</label>
+            <input value={this.state.points} type="number" id="rulePoint" name="points" onChange={this.handleChange} />
+            <button onClick={this.handleSave}>Save</button>
+          </div>
          }
       </div>
       <div>

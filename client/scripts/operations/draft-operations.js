@@ -1,9 +1,11 @@
 import { push } from 'react-router-redux';
-
-export function saveDraft(people, leagueId) {
+import { userRecieved } from '../actions/user-actions';
+export function saveDraft(toSave, leagueId) {
   const body = {
-    people,
+    people: toSave,
+    leagueId,
   }
+  console.log(body);
   return (dispatch) => {
     return fetch('/api/draft', {
       method: 'POST',
@@ -13,8 +15,8 @@ export function saveDraft(people, leagueId) {
     })
     .then(res => res.json())
     .then((json) => {
-      console.log(json, 'this is JSON');
       // this doesn't work.
+      dispatch(userRecieved(json))
       dispatch(push(`league/${leagueId}`));
     })
   }

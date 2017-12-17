@@ -13,6 +13,7 @@ export class Episode extends React.Component {
     this.state = {
       isPristine: true,
       episodeName: '',
+      saved: [],
     }
     this.handleSave = this.handleSave.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -55,20 +56,35 @@ export class Episode extends React.Component {
       this.props.actions.createEpisode(personToSave, leagueId, episodeName);
     } else {
       const id = activeEpisode._id;
-      console.log(id, 'this should be the epsiode id');
       this.props.actions.updateEpisode(personToSave, id, leagueId, episodeName);
     }
+    const savedState = this.state.saved;
+    const newSaved = [...savedState, this.state.person._id];
+    console.log(newSaved);
+    this.setState({
+      saved: newSaved,
+    })
   }
   render() {
     const { activeLeague, activeLeaguePeople } = this.props;
     const {rules } = activeLeague;
     return (
-      <div className="episode"> 
-        Episode.
+      <div className="episodeSection"> 
+        <div className="episode">
+        <h2>Create an Episode.</h2>
+        <label>Name Your Episode</label>
         <input name="episodeName" value={this.state.episodeName} onChange={this.handleName}/>
         {activeLeaguePeople.map((person, i) => {
+          const isSaved = this.state.saved.filter((item) => {
+            return person._id === item;
+          });
+          if(isSaved.length === 1) {
+            return (
+              <div> Saved, we are doing mad calculations now! </div>
+            )
+          }
           return (
-            <div>
+            <div className="episode__addBlock">
               <PeopleWithRules
                 handleChange={(e, person) => this.handleChange(e, person)}
                 id={i}
@@ -77,10 +93,17 @@ export class Episode extends React.Component {
                 league={activeLeague._id}
                 value={this.state.ruleId}
               />
-              <button onClick={this.handleSave}>Save</button>
+              <button className="episode__saveButton" onClick={this.handleSave}>Save</button>
             </div>
           )
         })}
+        <Link
+          to={`/league/${activeLeague._id}`}
+          className="episode__backButton"
+        >
+          Done With This Episode
+        </Link>
+        </div>
       </div>
     )
   }

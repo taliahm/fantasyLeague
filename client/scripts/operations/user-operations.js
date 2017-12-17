@@ -8,8 +8,9 @@ export function signup(user) {
       body: JSON.stringify(user),
       headers: { 'Content-Type': 'application/json' },
     })
-    .then((user) => {
-      dispatch(userRecieved(user))
+    .then(user => user.json() )
+    .then((json) => {
+      dispatch(userRecieved(json))
     })
     .catch((err) => {
       console.log('sign up error', err);
@@ -25,9 +26,10 @@ export function login(user) {
       body: JSON.stringify(user),
       headers: { 'Content-Type': 'application/json' },
     })
-    .then((user) => {
-      console.log(user, 'success signing in');
-      dispatch(userRecieved(user))
+    .then(user => user.json())
+    .then((json) => {
+      console.log(json, 'this is what is returned?');
+      dispatch(userRecieved(json))
     })
   }
 }
@@ -39,11 +41,34 @@ export function checkUserStatus() {
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
     })
-    .then((user) => {
-      if(user.ok) {
-      // console.log(user, 'success signing in');
-        dispatch(userRecieved(user))
+    .then(resp => {
+      if(resp.status !== 200) {
+        dispatch(userRecieved(null));
+        throw new Error('You are not logged in');
       }
+      return resp.json();
+    })
+    .then((json) => {
+        dispatch(userRecieved(json))
+      });
+  }
+}
+
+export function userLogout() {
+  return (dispatch) => {
+    return fetch('/api/logout', {
+      method: 'GET',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+    })
+    .then((resp => {
+      if(resp.status !== 200) {
+        throw new Error('failure to logout client');
+      }
+      return resp.json();
+    }))
+    .then((json) => {
+      dispatch(userRecieved(null));
     })
   }
 }

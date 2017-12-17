@@ -1,0 +1,60 @@
+.login {
+  display: flex;
+  width: 80%;
+  margin: 0 auto;
+  &__title {
+    font-family: $displayFont;
+    letter-spacing: 1.5px;
+  }
+  &__half--green, &__half--grey {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 50%;
+    padding: 10px;
+    min-height: 400px;
+  }
+  &__half--grey {
+    background: #848C8E;
+    margin-right: 10px;
+
+  }
+  &__half--green {
+    background: #75B09C;
+    margin-left: 10px;
+  }
+  &__input--green, &__input--grey {
+    border: none;
+    padding: 10px 20px;
+    margin-bottom: 10px;
+  }
+  &__input--green {
+    background: darken($green, 10);
+  }
+  &__input--grey {
+    background: darken($grey, 10);
+  }
+  &__button--green, &__button--grey {
+    border: none;
+    padding: 10px 20px;
+    font-size: 14px;
+    border-radius: 0;
+    transition: all 0.3s ease-out;
+  }
+  &__button--green {
+    background: lighten($green, 20);
+    &:hover {
+      background: darken($green, 10);
+      color: $white;
+    }
+  }
+  &__button--grey {
+    background: lighten($grey, 10);
+    &:hover {
+      background: darken($grey, 10);
+      color: $white;
+    }
+  }
+}

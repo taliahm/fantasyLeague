@@ -392,6 +392,53 @@ template {
 *, *:before, *:after {
   box-sizing: border-box; }
 
+.login {
+  display: flex;
+  width: 80%;
+  margin: 0 auto; }
+  .login__title {
+    font-family: "Abril Fatface", cursive;
+    letter-spacing: 1.5px; }
+  .login__half--green, .login__half--grey {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 50%;
+    padding: 10px;
+    min-height: 400px; }
+  .login__half--grey {
+    background: #848C8E;
+    margin-right: 10px; }
+  .login__half--green {
+    background: #75B09C;
+    margin-left: 10px; }
+  .login__input--green, .login__input--grey {
+    border: none;
+    padding: 10px 20px;
+    margin-bottom: 10px; }
+  .login__input--green {
+    background: #589a84; }
+  .login__input--grey {
+    background: #6b7274; }
+  .login__button--green, .login__button--grey {
+    border: none;
+    padding: 10px 20px;
+    font-size: 14px;
+    border-radius: 0;
+    transition: all 0.3s ease-out; }
+  .login__button--green {
+    background: #b6d5cb; }
+    .login__button--green:hover {
+      background: #589a84;
+      color: #FBF9FC; }
+  .login__button--grey {
+    background: #9fa5a6; }
+    .login__button--grey:hover {
+      background: #6b7274;
+      color: #FBF9FC; }
+
 .league__centerTitle {
   display: flex;
   align-items: center;
@@ -403,12 +450,16 @@ template {
   display: inline-block;
   margin: 0 auto; }
 
+.league h3 {
+  font-family: "Abril Fatface", cursive; }
+
 .league h2 {
   text-align: center;
   padding: 20px 0;
   color: #2A2D34;
   margin: 0;
-  font-size: 40px; }
+  font-size: 40px;
+  font-family: "Abril Fatface", cursive; }
 
 .league h1 {
   position: absolute;
@@ -430,7 +481,8 @@ template {
 .league__people {
   background: #b9bebf;
   padding: 20px 10px;
-  margin: 0 25px; }
+  margin: 0 25px;
+  text-align: center; }
   .league__people h3 {
     margin: 0;
     text-align: center;
@@ -438,13 +490,13 @@ template {
 
 .league .holdPeople {
   display: flex;
-  flex-wrap: wrap; }
+  justify-content: center;
+  align-items: center; }
 
 .league .personBlock {
-  width: 25%;
   min-height: 75px;
   border: 1px solid #2A2D34;
-  margin: 10px; }
+  margin: 15px; }
   .league .personBlock__img {
     max-width: 65%;
     margin: 0 auto; }
@@ -458,31 +510,282 @@ template {
     color: #FBF9FC; }
 
 .league__episodes {
+  width: 50%;
   padding: 20px 10px;
   margin: 0 25px;
   background: #FBF9FC; }
 
 .league__rules {
+  width: 50%;
   background: #b9bebf;
   padding: 20px 10px;
   margin: 0 25px; }
 
-.personBlock {
+.league__users {
+  margin: 0 25px;
+  text-align: center; }
+
+.league__holdUsers {
+  display: flex; }
+
+.league__userInfo {
   width: 25%;
-  min-height: 75px;
-  border: 1px solid #2A2D34;
-  margin: 10px; }
-  .personBlock__img {
-    max-width: 65%;
-    margin: 0 auto; }
-    .personBlock__img img {
-      max-width: 100%;
-      display: block; }
-  .personBlock p {
-    margin: 0;
+  text-align: center;
+  border: 1px solid #848C8E;
+  margin: 5px;
+  border-radius: 5px; }
+
+.league__formControls {
+  display: flex;
+  margin: 0 25px;
+  min-height: 100px; }
+
+.league__infoBlock {
+  margin: 0 25px; }
+  .league__infoBlock h3 {
+    text-align: center; }
+
+.league__holdInfoBlock {
+  display: flex; }
+
+.league__draftButton {
+  display: inline-block;
+  background: #848C8E;
+  text-decoration: none;
+  color: #FBF9FC;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 0; }
+  .league__draftButton:hover {
+    background: #52585a; }
+
+.draftBlock {
+  text-align: center; }
+  .draftBlock h2 {
     text-align: center;
-    background: #2A2D34;
-    color: #FBF9FC; }
+    font-family: "Abril Fatface", cursive; }
+  .draftBlock__peopleSection {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 25px; }
+  .draftBlock__holdPeople {
+    width: 33%;
+    text-align: center;
+    padding: 25px; }
+  .draftBlock .personBlock {
+    min-height: 75px;
+    border: 1px solid #2A2D34;
+    margin: 10px; }
+    .draftBlock .personBlock__img {
+      max-width: 65%;
+      margin: 0 auto; }
+      .draftBlock .personBlock__img img {
+        max-width: 100%;
+        display: block; }
+    .draftBlock .personBlock p {
+      margin: 0;
+      text-align: center;
+      background: #2A2D34;
+      color: #FBF9FC; }
+  .draftBlock__saveButton {
+    display: inline-block;
+    background: #848C8E;
+    text-decoration: none;
+    color: #FBF9FC;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 0;
+    border: none; }
+    .draftBlock__saveButton:hover {
+      background: #52585a; }
+
+.draftCheckbox__block {
+  margin: 10px 0; }
+
+.create {
+  display: flex;
+  height: 100vh;
+  background: #FBF9FC; }
+  .create__hold {
+    background: white;
+    margin: auto;
+    min-height: 400px;
+    min-width: 300px;
+    padding: 50px;
+    position: relative; }
+  .create__title {
+    margin: 0;
+    color: #52585a;
+    font-family: "Abril Fatface", cursive;
+    font-size: 40px;
+    text-align: center;
+    letter-spacing: 1.5px; }
+  .create__description {
+    font-size: 20px;
+    text-align: center; }
+  .create__form {
+    min-height: 150px;
+    display: flex;
+    flex-direction: column;
+    flex-basis: 1;
+    text-align: center;
+    align-items: center; }
+  .create__label {
+    padding-top: 30px;
+    padding-bottom: 10px; }
+  .create__input {
+    border: none;
+    background: #ceb5da;
+    padding: 10px 20px;
+    margin-bottom: 10px; }
+  .create__formControls {
+    display: flex;
+    align-items: center; }
+  .create__saveButton {
+    border: none;
+    background: #848C8E;
+    padding: 10px;
+    border-radius: 0;
+    min-width: 80px;
+    color: #FBF9FC;
+    cursor: pointer;
+    transition: all 0.3s ease-out;
+    font-family: "Poppins", sans-serif; }
+    .create__saveButton:hover {
+      background: #75B09C; }
+  .create__cancel {
+    background: #848C8E;
+    text-decoration: none;
+    color: #FBF9FC;
+    padding: 10px;
+    margin: 10px; }
+    .create__cancel:hover {
+      background: #52585a; }
+
+.createPeopleSection {
+  text-align: center; }
+
+.createPeople {
+  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 40px; }
+  .createPeople__half {
+    min-width: 300px; }
+  .createPeople__button {
+    border: none;
+    background: #848C8E;
+    padding: 10px;
+    border-radius: 0;
+    min-width: 80px;
+    color: #FBF9FC;
+    cursor: pointer;
+    transition: all 0.3s ease-out;
+    font-family: "Poppins", sans-serif;
+    font-size: 11px; }
+    .createPeople__button:hover {
+      background: #52585a; }
+  .createPeople__list {
+    text-align: left; }
+  .createPeople__link {
+    background: #848C8E;
+    font-size: 10px;
+    text-decoration: none;
+    color: #FBF9FC;
+    padding: 10px;
+    margin-top: 50px; }
+    .createPeople__link:hover {
+      background: #52585a; }
+
+.createRule {
+  text-align: center;
+  margin: 20px 0; }
+  .createRule__form {
+    display: flex;
+    flex-direction: column;
+    align-items: center; }
+  .createRule input {
+    border: none;
+    background: #ceb5da;
+    padding: 10px 20px;
+    margin-bottom: 10px; }
+  .createRule textarea {
+    border: none;
+    background: #ceb5da;
+    padding: 10px 20px;
+    margin-bottom: 10px; }
+  .createRule button {
+    border: none;
+    background: #848C8E;
+    padding: 10px;
+    border-radius: 0;
+    min-width: 80px;
+    color: #FBF9FC;
+    cursor: pointer;
+    transition: all 0.3s ease-out;
+    font-family: "Poppins", sans-serif;
+    font-size: 11px; }
+    .createRule button:hover {
+      background: #75B09C; }
+
+.episode {
+  text-align: center;
+  margin: 0 25px;
+  padding: 15px; }
+  .episode h2 {
+    text-align: center;
+    font-family: "Abril Fatface", cursive; }
+  .episode__addBlock {
+    margin: 40px 0;
+    border: 1px solid #848C8E;
+    border-radius: 5px;
+    padding: 10px; }
+  .episode__saveButton {
+    margin-top: 10px;
+    border: none;
+    background: #848C8E;
+    padding: 10px;
+    border-radius: 0;
+    color: #FBF9FC;
+    cursor: pointer;
+    transition: all 0.3s ease-out;
+    font-family: "Poppins", sans-serif; }
+    .episode__saveButton:hover {
+      background: #75B09C; }
+  .episode input {
+    border: none;
+    background: #ceb5da;
+    padding: 20px 20px 5px 20px;
+    margin-bottom: 10px; }
+  .episode span.peopleName {
+    color: #75B09C;
+    font-size: 20px; }
+  .episode__backButton {
+    display: inline-block;
+    background: #848C8E;
+    font-size: 10px;
+    text-decoration: none;
+    color: #FBF9FC;
+    padding: 10px;
+    margin-bottom: 50px; }
+    .episode__backButton:hover {
+      background: #52585a; }
+
+.peopleWithRules__ruleBlock {
+  padding: 5px 0;
+  margin-bottom: 10px; }
+
+.peopleWithRules__ruleTitle {
+  margin-bottom: 2px;
+  font-size: 20px; }
+
+.peopleWithRules__formBlock {
+  position: relative; }
+  .peopleWithRules__formBlock label {
+    position: absolute;
+    font-size: 10px;
+    color: #52585a;
+    font-style: italic; }
 
 body {
   font-family: 'Poppins', sans-serif; }
@@ -495,12 +798,18 @@ body {
   height: 100vh; }
   .main h1 {
     font-family: 'Abril Fatface', cursive;
+    font-size: 45px;
     text-align: center;
-    padding: 40px 0;
+    padding: 40px 0 0 0;
     color: #FBF9FC;
     text-shadow: #75B09C 3px 0px;
-    letter-spacing: 1.2px;
+    letter-spacing: 1.5px;
     margin: 0; }
+  .main__description {
+    color: #FBF9FC;
+    text-align: center;
+    padding-bottom: 40px;
+    font-size: 20px; }
   .main__holdSections {
     display: flex;
     width: 100%; }
@@ -535,3 +844,14 @@ body {
     .main__leagueLink h4 {
       margin: 0;
       padding: 0 10px; }
+  .main__logoutButton {
+    display: inline-block;
+    margin-top: 10px;
+    border: none;
+    border-radius: 0;
+    padding: 5px 10px;
+    margin-left: 10px;
+    background: #9fa5a6; }
+    .main__logoutButton:hover {
+      background: #6b7274;
+      color: #FBF9FC; }

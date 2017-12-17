@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { Link } from 'react-router';
 
 import Participant from './Participant.js';
 import Rule from './Rule.js';
@@ -17,6 +18,11 @@ class CreatePeople extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleAdd = this.handleAdd.bind(this);
   }
+  shouldComponentUpdate(props, nextProps) {
+    if(nextProps.peopleCreated !== props.peopleCreated) {
+      return true;
+    }
+  }
   handleChange(e) {
     this.setState({
       [e.target.name] : e.target.value,
@@ -31,32 +37,65 @@ class CreatePeople extends React.Component {
   }
   render() {
     const { rules, people } = this.state;
+    const { peopleCreated, rulesCreated } = this.props;
     const peopleArray = [];
     const rulesArray = [];
     for (let i = 0; i < people; i++) {
-      peopleArray.push(<Participant />);
+      peopleArray.push(<Participant/>);
     }
     for (let i = 0; i < rules; i++) {
       rulesArray.push(<Rule />);
     }
     return (
-      <div>
-       <h4>Your People! 🤓</h4>
-       <div>
-         <ul>
-            <li>
-              <button onClick={(e) => this.handleAdd(e, 'people')}>Add A Person!</button>
-            </li>
-            {peopleArray}
-          <li>
-          </li>
-         </ul>
-      </div>
-      <div>
-      <h4>Add Your Rules!</h4>
-      {rulesArray}
-      <button onClick={(e) => this.handleAdd(e, 'rules')}>Add A Rule!</button>
-      </div>
+      <div className="createPeopleSection">
+        <div className="createPeople">
+          <div className="createPeople__half">
+            <h4>People In Your League</h4>
+            <div>
+                <button
+                  onClick={(e) => this.handleAdd(e, 'people')}
+                  className="createPeople__button"
+                >
+                  Add A Person!
+                </button>
+                {peopleArray}
+              <ul className="createPeople__list">
+                  {peopleCreated.length === 0 ? 'People in your league will appear here.' : peopleCreated.map((item) => {
+                    return (
+                      <li>
+                      {item.personName}
+                      </li>
+                    )
+                  })}
+              </ul>
+            </div>
+          </div>
+          <div className="createPeople__half">
+            <h4>The Rules of Your League</h4>
+            <div>
+              <button
+                onClick={(e) => this.handleAdd(e, 'rules')}
+                className="createPeople__button"
+              >
+                Add A Rule!
+              </button>
+              {rulesArray}
+              <ul className="createPeople__list">
+              {rulesCreated.length === 0 ? 'The rules of your league will appear here' : rulesCreated.map((item) => {
+                return (
+                  <li>{item.ruleName} {item.points} points</li>
+                )
+              })}
+              </ul>
+            </div>
+          </div>
+        </div>
+        <Link
+          to="/"
+          className="createPeople__link"
+        >
+          Done Creating League!
+        </Link>
       </div>
     )
   }
@@ -65,6 +104,8 @@ class CreatePeople extends React.Component {
 function mapStateToProps(state) {
   return {
     leagues: state.data.leagues,
+    peopleCreated: state.data.personCreated,
+    rulesCreated: state.data.ruleCreated,
   }
 }
 

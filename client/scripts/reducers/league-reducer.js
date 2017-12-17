@@ -6,6 +6,8 @@ const initialState = {
   activeLeaguePeople: [],
   leagueCreated: false,
   isFetching: false,
+  personCreated: [],
+  ruleCreated: [],
 };
 
 export default function leagueReducer(state = initialState, action) {
@@ -17,6 +19,8 @@ export default function leagueReducer(state = initialState, action) {
           isFetching: false,
           activeLeague: state.activeLeague,
           activeLeaguePeople: state.activeLeaguePeople,
+          personCreated: [],
+          ruleCreated: [],
         };
       }
       case types.LEAGUE_FETCHING: {
@@ -26,6 +30,8 @@ export default function leagueReducer(state = initialState, action) {
           leagueCreated: false,
           activeLeague: state.activeLeague,
           activeLeaguePeople: state.activeLeaguePeople,
+          personCreated: [],
+          ruleCreated: [],
         }
       }
       case types.LEAGUE_RECIEVED: {
@@ -35,25 +41,35 @@ export default function leagueReducer(state = initialState, action) {
           leagues: state.leagues,
           isFetching: false,
           activeLeaguePeople: state.activeLeaguePeople,
+          personCreated: [],
+          ruleCreated: [],
         }
       }
       case types.LEAGUE_CREATED: {
-        const newState = Object.assign({}, state, { activeLeague: action.payload }, { leagueCreated: true});
+        const newState = Object.assign({}, state, { activeLeague: action.payload }, { personCreated: [], ruleCreated: [] }, { leagueCreated: true});
         return newState;
-          // ...state,
-          // activeLeague: action.payload,
-          // leagueCreated: true,
-          // leagues: state.leagues,
-          // activeLeaguePeople: state.activeLeaguePeople,
       }
       case types.PEOPLE_RECIEVED: {
         return {
           ...state,
           leaguesCreated: true,
           isFetching: false,
-          // leagues: state.leagues,
-          // activeLeague: state.activeLeague,
           activeLeaguePeople: action.payload,
+          personCreated: [],
+          ruleCreated: [],
+        }
+      }
+      case types.LEAGUE_EDITTED: {
+        const lastPeople = state.personCreated;
+        return {
+          ...state,
+          personCreated: [action.payload, ...lastPeople],
+        }
+      }
+      case types.RULE_ADDED: {
+        return {
+          ...state,
+          ruleCreated: action.payload,
         }
       }
       default: {

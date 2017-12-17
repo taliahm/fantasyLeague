@@ -1,4 +1,4 @@
-import { leaguesRecieved, fetching, leagueRecieved, leagueCreated, peopleRecieved  } from '../actions/league-actions';
+import { personAddedToLeague, ruleAddedToLeague, leaguesRecieved, fetching, leagueRecieved, leagueCreated, peopleRecieved  } from '../actions/league-actions';
 import { push } from 'react-router-redux';
 
 export default function createLeagues() {
@@ -45,7 +45,6 @@ export function getSingleLeague(id) {
 
 // get people in one of the leagues
 export function getPeopleInLeague(id) {
-  console.log('trying to get the ppep', id);
   return (dispatch) => {
     dispatch(fetching(true))
     return fetch(`/api/person/${id}`, { method: 'GET' })
@@ -82,6 +81,8 @@ export function updateLeague(person, id, key) {
     })
     .then(res => res.json())
     .then(json => {
+      console.log(json);
+      dispatch(ruleAddedToLeague(json.rules));
     })
     .catch(err => console.log(err))
   }
@@ -97,7 +98,24 @@ export function addPerson(person) {
     })
     .then(res => res.json())
     .then(json => {
-      console.log(json);
+      dispatch(personAddedToLeague(json));
+    })
+    .catch(err => console.log(err))
+  }
+}
+
+export function joinLeague(leagueId) {
+  console.log('trying to joing league');
+  return (dispatch) => {
+    return fetch(`/api/draft/${leagueId}/`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+    })
+    .then(res => res.json())
+    .then(json => {
+      // push to new route
+      dispatch(push(`/draft/league`));
     })
     .catch(err => console.log(err))
   }

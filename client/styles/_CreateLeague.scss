@@ -1,0 +1,72 @@
+.create {
+  display: flex;
+  height: 100vh;
+  background: $white;
+  &__hold {
+    background: white;
+    margin: auto;
+    min-height: 400px;
+    min-width: 300px;
+    padding: 50px;
+    position: relative;
+  }
+  &__title {
+    margin: 0;
+    color: darken($grey, 20);
+    font-family: $displayFont;
+    font-size: 40px;
+    text-align: center;
+    letter-spacing: 1.5px;
+  }
+  &__description {
+    font-size: 20px;
+    text-align: center;
+  }
+  &__form {
+    min-height: 150px;
+    display: flex;
+    flex-direction: column;
+    flex-basis: 1;
+    text-align: center;
+    // justify-content: space-around;
+    align-items: center;
+  }
+  &__label {
+    padding-top: 30px;
+    padding-bottom: 10px;
+  }
+  &__input {
+    border: none;
+    background: darken($white, 20);
+    padding: 10px 20px;
+    margin-bottom: 10px;
+  }
+  &__formControls {
+    display: flex;
+    align-items: center;
+  }
+  &__saveButton {
+    border: none;
+    background: $grey;
+    padding: 10px;
+    border-radius: 0;
+    min-width: 80px;
+    color: $white;
+    cursor: pointer;
+    transition: all 0.3s ease-out;
+    font-family: $font;
+    &:hover {
+      background: $green;
+    }
+  }
+  &__cancel {
+    background: $grey;
+    text-decoration: none;
+    color: $white;
+    padding: 10px;
+    margin: 10px;
+    &:hover {
+      background: darken($grey, 20);
+    }
+  }
+}
