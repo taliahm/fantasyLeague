@@ -1,1 +1,1 @@
-nf start -j Procfile
+nf start -j Procfile-dev
